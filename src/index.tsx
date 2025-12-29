@@ -1,14 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
-
 import { Article } from './components/article/Article';
 import {
 	ArticleParamsForm,
 	TextProps,
 } from './components/article-params-form/ArticleParamsForm';
 import { defaultArticleState } from './constants/articleProps';
-
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
