@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import plane from 'src/images/plane.png';
 import { Text } from 'src/ui/text';
-
 import styles from './Article.module.scss';
 
 export const Article = () => {
