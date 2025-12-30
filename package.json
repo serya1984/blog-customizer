@@ -69,9 +69,7 @@
 		"prepare": "husky install",
 		"commit": "npm run test && cz",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build",
-		"postinstall": "playwright install",
-		"test": "playwright test"
+		"build-storybook": "storybook build"
 	},
 	"eslintConfig": {
 		"extends": [
