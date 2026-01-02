@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 import { Article } from './components/article/Article';
 import {
 	ArticleParamsForm,
@@ -14,26 +13,37 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	const [props, setProps] = useState({
-		font: defaultArticleState.fontFamilyOption,
-		size: defaultArticleState.fontSizeOption,
-		color: defaultArticleState.fontColor,
+	const defaultParamsProps: TextProps = {
+		fontFamily: defaultArticleState.fontFamilyOption,
+		fontSize: defaultArticleState.fontSizeOption,
+		fontColor: defaultArticleState.fontColor,
 		backgroundColor: defaultArticleState.backgroundColor,
 		contentWidth: defaultArticleState.contentWidth,
-	} as TextProps);
+	} as TextProps;
+
+	const [paramsProps, setParamsProps] = useState(defaultParamsProps);
+
+	const handleReset = () => {
+		setParamsProps(defaultParamsProps);
+	};
+
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
-					'--font-family': props.font.value,
-					'--font-size': props.size.value,
-					'--font-color': props.color.value,
-					'--container-width': props.contentWidth.value,
-					'--bg-color': props.backgroundColor.value,
+					'--font-family': paramsProps.fontFamily.value,
+					'--font-size': paramsProps.fontSize.value,
+					'--font-color': paramsProps.fontColor.value,
+					'--container-width': paramsProps.contentWidth.value,
+					'--bg-color': paramsProps.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm textProps={props} onChange={setProps} />
+			<ArticleParamsForm
+				textProps={paramsProps}
+				onChange={setParamsProps}
+				onReset={handleReset}
+			/>
 			<Article />
 		</main>
 	);

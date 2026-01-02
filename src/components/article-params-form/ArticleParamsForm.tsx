@@ -19,35 +19,42 @@ import {
 
 export type TextProps = {
 	/** Размер шрифта */
-	size: OptionType;
+	fontSize: OptionType;
 	/** Цвет шрифта */
-	color: OptionType;
+	fontColor: OptionType;
 	/** Фоновый цвет */
 	backgroundColor: OptionType;
 	/** Ширина контента */
 	contentWidth: OptionType;
 	/** font-family текста */
-	font: OptionType;
+	fontFamily: OptionType;
 };
 
-export const ArticleParamsForm = (props: {
+export const ArticleParamsForm = (articleParamsFormProps: {
 	textProps: TextProps;
 	onChange: (props: TextProps) => void;
+	onReset: () => void;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [font, setFont] = useState(props.textProps.font);
-	const [size, setSize] = useState(props.textProps.size);
-	const [color, setColor] = useState(props.textProps.color);
+	const [fontFamily, setFontFamily] = useState(
+		articleParamsFormProps.textProps.fontFamily
+	);
+	const [fontSize, setFontSize] = useState(
+		articleParamsFormProps.textProps.fontSize
+	);
+	const [fontColor, setFontColor] = useState(
+		articleParamsFormProps.textProps.fontColor
+	);
 	const [backgroundColor, setBackgroundColor] = useState(
-		props.textProps.backgroundColor
+		articleParamsFormProps.textProps.backgroundColor
 	);
 	const [contentWidth, setContentWidth] = useState(
-		props.textProps.contentWidth
+		articleParamsFormProps.textProps.contentWidth
 	);
 
 	const sidebarRef = useRef<HTMLElement>(null);
 
-	const hendleButtonClick = () => {
+	const handleButtonClick = () => {
 		setIsOpen(!isOpen);
 	};
 
@@ -55,10 +62,28 @@ export const ArticleParamsForm = (props: {
 		setIsOpen(false);
 	};
 
+	const handleReset = () => {
+		setFontFamily(defaultArticleState.fontFamilyOption);
+		setFontColor(defaultArticleState.fontColor);
+		setBackgroundColor(defaultArticleState.backgroundColor);
+		setContentWidth(defaultArticleState.contentWidth);
+		setFontSize(defaultArticleState.fontSizeOption);
+	};
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		articleParamsFormProps.onChange({
+			fontFamily: fontFamily,
+			fontSize: fontSize,
+			fontColor: fontColor,
+			backgroundColor: backgroundColor,
+			contentWidth: contentWidth,
+		});
+	};
+
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
-				isOpen &&
 				sidebarRef.current &&
 				!sidebarRef.current.contains(event.target as Node)
 			) {
@@ -75,38 +100,42 @@ export const ArticleParamsForm = (props: {
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={hendleButtonClick} />
+			<ArrowButton isOpen={isOpen} onClick={handleButtonClick} />
 			<aside
 				ref={sidebarRef}
 				className={clsx(styles.container, {
 					[styles.container_open]: isOpen,
 				})}>
-				<form className={styles.form}>
+				<form
+					className={styles.form}
+					onSubmit={handleSubmit}
+					onReset={handleReset}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
+
 					<Select
 						title='Шрифт'
-						selected={font}
-						onChange={setFont}
+						selected={fontFamily}
+						onChange={setFontFamily}
 						options={fontFamilyOptions}
 					/>
 					<RadioGroup
-						name={size.title}
-						onChange={setSize}
+						name={fontSize.title}
+						onChange={setFontSize}
 						options={fontSizeOptions}
 						selected={{
-							title: size.title,
-							value: size.value,
-							className: size.className,
+							title: fontSize.title,
+							value: fontSize.value,
+							className: fontSize.className,
 							optionClassName: undefined,
 						}}
 						title={'размер шрифта'}
 					/>
 					<Select
 						title='Цвет шрифта'
-						selected={color}
-						onChange={setColor}
+						selected={fontColor}
+						onChange={setFontColor}
 						options={fontColors}
 					/>
 					<Separator />
@@ -127,31 +156,9 @@ export const ArticleParamsForm = (props: {
 							title='Сбросить'
 							htmlType='reset'
 							type='clear'
-							onClick={(e) => {
-								e.preventDefault();
-								setFont(defaultArticleState.fontFamilyOption);
-								setColor(defaultArticleState.fontColor);
-								setBackgroundColor(defaultArticleState.backgroundColor);
-								setContentWidth(defaultArticleState.contentWidth);
-								setSize(defaultArticleState.fontSizeOption);
-							}}
+							onClick={articleParamsFormProps.onReset}
 						/>
-						<Button
-							onClick={(e) => {
-								e.preventDefault();
-								props.onChange({
-									font: font,
-									size: size,
-									color: color,
-									backgroundColor: backgroundColor,
-									contentWidth: contentWidth,
-								});
-								return false;
-							}}
-							title='Применить'
-							htmlType='submit'
-							type='apply'
-						/>
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
