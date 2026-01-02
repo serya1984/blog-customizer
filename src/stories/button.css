@@ -1,0 +1,35 @@
+.storybook-button {
+	display: inline-block;
+	font-weight: 700;
+	font-family: 'Nunito Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	line-height: 1;
+	border: 0;
+	border-radius: 3em;
+	cursor: pointer;
+}
+
+.storybook-button__primary {
+	color: white;
+	background-color: #555ab9;
+}
+
+.storybook-button__secondary {
+	color: lab(21.25% 0 0);
+	background-color: transparent;
+	box-shadow: #00000026 0 0 0 1px inset;
+}
+
+.storybook-button__small {
+	padding: 10px 16px;
+	font-size: 12px;
+}
+
+.storybook-button__medium {
+	padding: 11px 20px;
+	font-size: 14px;
+}
+
+.storybook-button__large {
+	padding: 12px 24px;
+	font-size: 16px;
+}
