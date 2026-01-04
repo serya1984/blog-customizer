@@ -35,7 +35,7 @@ export const ArticleParamsForm = (articleParamsFormProps: {
 	onChange: (props: TextProps) => void;
 	onReset: () => void;
 }) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [fontFamily, setFontFamily] = useState(
 		articleParamsFormProps.textProps.fontFamily
 	);
@@ -55,11 +55,13 @@ export const ArticleParamsForm = (articleParamsFormProps: {
 	const sidebarRef = useRef<HTMLElement>(null);
 
 	const handleButtonClick = () => {
-		setIsOpen(!isOpen);
+		setIsSidebarOpen(!isSidebarOpen);
 	};
 
 	const handleClose = () => {
-		setIsOpen(false);
+		if (isSidebarOpen) {
+			setIsSidebarOpen(false);
+		}
 	};
 
 	const handleReset = () => {
@@ -82,6 +84,8 @@ export const ArticleParamsForm = (articleParamsFormProps: {
 	};
 
 	useEffect(() => {
+		if (!isSidebarOpen) return;
+
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
 				sidebarRef.current &&
@@ -96,15 +100,15 @@ export const ArticleParamsForm = (articleParamsFormProps: {
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isSidebarOpen]);
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={handleButtonClick} />
+			<ArrowButton isOpen={isSidebarOpen} onClick={handleButtonClick} />
 			<aside
 				ref={sidebarRef}
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isSidebarOpen,
 				})}>
 				<form
 					className={styles.form}
